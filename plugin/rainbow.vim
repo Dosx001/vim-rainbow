@@ -6,6 +6,8 @@
 
 " By default, use rainbow colors copied from gruvbox colorscheme (https://github.com/morhetz/gruvbox).
 " They are generally good for both light and dark colorschemes.
+let g:rainbow_blacklist = get(g:, 'rainbow_blacklist', [])
+
 let s:guifgs = exists('g:rainbow_guifgs')? g:rainbow_guifgs : [
             \ '#458588',
             \ '#b16286',
@@ -47,6 +49,9 @@ let s:ctermfgs = exists('g:rainbow_ctermfgs')? g:rainbow_ctermfgs : [
 let s:max = has('gui_running')? len(s:guifgs) : len(s:ctermfgs)
 
 func! rainbow#load(...)
+    if index(g:rainbow_blacklist, &filetype) != -1
+        return
+    endif
     if exists('b:loaded')
         cal rainbow#clear()
     endif
@@ -144,19 +149,17 @@ func! rainbow#toggle()
     endif
 endfunc
 
-if exists('g:rainbow_active') && g:rainbow_active
-    if exists('g:rainbow_load_separately')
-        let ps = g:rainbow_load_separately
-        for i in range(len(ps))
-            if len(ps[i]) < 3
-                exe printf('au syntax,colorscheme %s call rainbow#load(ps[%d][1])' , ps[i][0] , i)
-            else
-                exe printf('au syntax,colorscheme %s call rainbow#load(ps[%d][1] , ps[%d][2])' , ps[i][0] , i , i)
-            endif
-        endfor
-    else
-        au syntax,colorscheme * call rainbow#load()
-    endif
+if exists('g:rainbow_load_separately')
+    let ps = g:rainbow_load_separately
+    for i in range(len(ps))
+        if len(ps[i]) < 3
+            exe printf('au syntax,colorscheme %s call rainbow#load(ps[%d][1])' , ps[i][0] , i)
+        else
+            exe printf('au syntax,colorscheme %s call rainbow#load(ps[%d][1] , ps[%d][2])' , ps[i][0] , i , i)
+        endif
+    endfor
+else
+    au syntax,colorscheme * call rainbow#load()
 endif
 
 command! RainbowToggle call rainbow#toggle()

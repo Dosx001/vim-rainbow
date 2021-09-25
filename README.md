@@ -32,42 +32,28 @@ keyword, for C++ for example).
 Vundle : Add this to .vimrc
 
 ```vim
-Plugin 'frazrepo/vim-rainbow'
+Plugin 'Dosx001/vim-rainbow'
 ```
 
-# Simple Configuration
+# Configuration
 
-Put this on your `.vimrc` for loading it for specific file types:
-
+You can define what parentheses to use for each file type.
 ```vim
-au FileType c,cpp,objc,objcpp call rainbow#load()
-```
-or just this to enable it globally:
-
-```vim
-let g:rainbow_active = 1
-```
-
-# Advanced Configuration
-
-An advanced configuration allows you to define what parentheses to use
-for each type of file. You can also determine the colors of your
-parentheses by this way (read file vim73/rgb.txt for all named colors).
-
-e.g. this is an advanced config (add these sentences to your `.vimrc`):
-
-```vim
-let g:rainbow_active = 1
-
 let g:rainbow_load_separately = [
     \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
     \ [ '*.tex' , [['(', ')'], ['\[', '\]']] ],
     \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
     \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ],
     \ ]
-
+```
+You can also determine the colors of your parentheses (read file vim73/rgb.txt for all named colors).
+```vim
 let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
 let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+```
+You can prevent rainbow from running for specific file types.
+```vim
+let g:rainbow_blacklist = ['css', 'html', 'scss']
 ```
 
 # User Command
