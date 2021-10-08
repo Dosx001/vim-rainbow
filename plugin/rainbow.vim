@@ -78,25 +78,20 @@ func! rainbow#load(...)
 
     let b:operators = (a:0 < 2) ? '"\v[{\[(<_"''`#*/>)\]}]@![[:punct:]]|\*/@!|/[/*]@!|\<#@!|#@<!\>"' : a:2
 
+    let str = 'TOP'
+    let cmd = 'syn match %s %s containedin=%s contained'
+    let cmd2 = 'syn region %s matchgroup=%s start=+%s+ end=+%s+ containedin=%s contains=%s,%s,@Spell fold'
     if b:operators != ''
         exe 'syn match op_lv0 '.b:operators
-        let cmd = 'syn match %s %s containedin=%s contained'
-        for [left , right] in b:loaded
-            for each in range(1, s:max)
-                exe printf(cmd, 'op_lv'.each, b:operators, 'lv'.each)
-            endfor
-        endfor
     endif
 
-    let str = 'TOP'
-    for each in range(1, s:max)
-        let str .= ',lv'.each
-    endfor
-
-    let cmd = 'syn region %s matchgroup=%s start=+%s+ end=+%s+ containedin=%s contains=%s,%s,@Spell fold'
     for [left , right] in b:loaded
         for each in range(1, s:max)
-            exe printf(cmd, 'lv'.each, 'lv'.each.'c', left, right, 'lv'.(each % s:max + 1), str, 'op_lv'.each)
+            exe printf(cmd, 'op_lv'.each, b:operators, 'lv'.each)
+            if b:operators != ""
+                let str .= ',lv'.each
+            endif
+            exe printf(cmd2, 'lv'.each, 'lv'.each.'c', left, right, 'lv'.(each % s:max + 1), str, 'op_lv'.each)
         endfor
     endfor
 
