@@ -6,7 +6,7 @@
 
 " By default, use rainbow colors copied from gruvbox colorscheme (https://github.com/morhetz/gruvbox).
 " They are generally good for both light and dark colorschemes.
-let g:rainbow_blacklist = get(g:, 'rainbow_blacklist', [])
+let g:rainbow_blocklist = get(g:, 'rainbow_blocklist', [])
 
 let s:guifgs = exists('g:rainbow_guifgs')? g:rainbow_guifgs : [
             \ '#458588',
@@ -49,7 +49,7 @@ let s:ctermfgs = exists('g:rainbow_ctermfgs')? g:rainbow_ctermfgs : [
 let s:max = has('gui_running')? len(s:guifgs) : len(s:ctermfgs)
 
 func! rainbow#load(...)
-    if index(g:rainbow_blacklist, &filetype) != -1
+    if index(g:rainbow_blocklist, expand('%:e:r')) != -1 || index(g:rainbow_blocklist, &ft) != -1
         return
     endif
     if exists('b:loaded')
